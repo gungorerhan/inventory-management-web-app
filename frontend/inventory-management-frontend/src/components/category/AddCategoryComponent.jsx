@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CategoryService from '../services/CategoryService'
+import CategoryService from '../../services/CategoryService'
 
 export default class AddCategoryComponent extends Component {
 

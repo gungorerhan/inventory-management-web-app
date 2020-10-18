@@ -3,10 +3,12 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import HeaderComponent from './components/HeaderComponent';
 import FooterComponent from './components/FooterComponent';
-import ListProductsComponent from './components/ListProductsComponent';
+import ListProductsComponent from './components/product/ListProductsComponent';
 import HomeComponent from './components/HomeComponent';
-import ListCategoriesComponent from './components/ListCategoriesComponent';
-import AddCategoryComponent from './components/AddCategoryComponent';
+import ListCategoriesComponent from './components/category/ListCategoriesComponent';
+import AddCategoryComponent from './components/category/AddCategoryComponent';
+import ListBrandComponent from './components/brand/ListBrandComponent';
+import AddBrandComponent from './components/brand/AddBrandComponent';
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
 
             <Route path="/categories" exact component={ListCategoriesComponent}></Route>
             <Route path="/add-category/:id" exact component={AddCategoryComponent}></Route>
+
+            <Route path="/brands" exact component={ListBrandComponent}></Route>
+            <Route path="/add-brand/:id" exact component={AddBrandComponent}></Route>
 
           </Switch>
         </div>
