@@ -19,6 +19,7 @@ public class Brand {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @Column()
     private String description;
 
     public Brand() {
