@@ -54,7 +54,7 @@ export default class AddBrandComponent extends Component {
         this.setState({description: event.target.value});
     }
 
-    // TODO add loading animation for save button event
+    // TODO add loading animation for save button event show info added or not
     saveBrand = (event) => {
         event.preventDefault();
 

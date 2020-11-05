@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import BrandService from '../../services/BrandService';
 
-export default class ListCategoriesComponent extends Component {
+export default class ListBrandsComponent extends Component {
 
     constructor(props){
         super(props)
 
         this.state = {
-            categories: []
+            brands: []
         }
 
         this.updateBrand = this.updateBrand.bind(this);
@@ -15,8 +15,8 @@ export default class ListCategoriesComponent extends Component {
     }
 
     componentDidMount(){
-        BrandService.getCategories().then((response) => {
-            this.setState({categories: response.data})
+        BrandService.getBrands().then((response) => {
+            this.setState({brands: response.data})
         });
     }
 
@@ -26,9 +26,10 @@ export default class ListCategoriesComponent extends Component {
     }
 
     // TODO add tier-2 control (e.g dialog-box)
+    // TODO check delete successful, show error if necessary
     deleteBrand(id){
         BrandService.deleteBrand(id).then((response) => {
-            this.setState({categories: this.state.categories.filter(brand => brand.id !== id)});
+            this.setState({brands: this.state.brands.filter(brand => brand.id !== id)});
         });
     }
 
@@ -51,10 +52,10 @@ export default class ListCategoriesComponent extends Component {
 
                         <tbody>
                             {   
-                                this.state.categories.map(
-                                    brand =>
+                                this.state.brands.map(
+                                    (brand, count) =>
                                     <tr key = {brand.id}>
-                                        <th scope="row">1</th>
+                                        <th scope="row">{count+1}</th>
                                         <td>{brand.name}</td>
                                         <td>{brand.description}</td>
                                         <td>Marka Son Güncelleme</td>

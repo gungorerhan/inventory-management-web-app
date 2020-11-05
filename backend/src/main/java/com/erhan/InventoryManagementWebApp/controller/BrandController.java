@@ -31,6 +31,8 @@ public class BrandController {
         return ResponseEntity.ok(brand);
     }
 
+    //TODO implement get brands of a category method here
+
     @PostMapping("/brands")
     public Brand createBrand(@RequestBody Brand brand){
         return brandRepository.save(brand);

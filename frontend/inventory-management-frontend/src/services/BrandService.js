@@ -4,7 +4,7 @@ const BRAND_API_BASE_URL = "http://localhost:8080/api/v1/brands";
 
 class BrandService {
 
-    getCategories(){
+    getBrands(){
         return axios.get(BRAND_API_BASE_URL);
     }
 

@@ -31,6 +31,8 @@ public class CategoryController{
         return ResponseEntity.ok(category);
     }
 
+    //TODO implement get products of a category method here
+
     @PostMapping("/categories")
     public Category createCategory(@RequestBody Category category){
         return categoryRepository.save(category);

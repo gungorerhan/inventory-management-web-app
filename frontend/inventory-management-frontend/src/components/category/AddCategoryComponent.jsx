@@ -23,7 +23,7 @@ export default class AddCategoryComponent extends Component {
 
     componentDidMount(){
         if (this.state.id === 'new'){
-            return
+            return;
         }else{
             CategoryService.getCategoryById(this.state.id).then((response) => {
                 let category = response.data;
@@ -54,7 +54,7 @@ export default class AddCategoryComponent extends Component {
         this.setState({description: event.target.value});
     }
 
-    // TODO add loading animation for save button event
+    // TODO add loading animation for save button event show info added or not
     saveCategory = (event) => {
         event.preventDefault();
 
@@ -64,7 +64,7 @@ export default class AddCategoryComponent extends Component {
 
         if(this.state.id === 'new'){
             CategoryService.addCategory(category).then((response) => {
-                // if new category successfuly added, show success message and clear state
+                // TODO if new category successfuly added, show success message and clear state
                 if(response.status === 200){
                     this.clearState();
                 }else{  // TODO if new category add fails, show error message
@@ -77,7 +77,7 @@ export default class AddCategoryComponent extends Component {
                 // if category updated successfuly, show success message and return to category list
                 if(response.status === 200){
                     this.props.history.push('/categories');
-                }else{  // TODO if new category add fails, show error message
+                }else{  // TODO if category update fails, show error message
                     console.log("Category add failed with error code: ", response.status);
                 }
             });

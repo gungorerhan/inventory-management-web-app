@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ProductService from '../../services/ProductService';
 
 export default class ListProductsComponent extends Component {
 
@@ -6,9 +7,33 @@ export default class ListProductsComponent extends Component {
         super(props)
 
         this.state = {
-            
+            products: []
         }
+
+        this.updateProduct = this.updateProduct.bind(this);
+        this.deleteProduct = this.deleteProduct.bind(this);
     }
+
+    componentDidMount(){
+        ProductService.getProducts().then((response) => {
+            this.setState({products: response.data, rowCount: 0})
+        });
+    }
+
+    // event handlers
+    updateProduct(id){
+        this.props.history.push(`/add-product/${id}`);
+    }
+
+    // TODO add tier-2 control (e.g dialog-box)
+    // TODO check delete successful, show error if necessary
+    deleteProduct(id){
+        ProductService.deleteProduct(id).then((response) => {
+            this.setState({products: this.state.products.filter(product => product.id !== id)});
+        })
+    }
+
+
 
     render() {
         return (
@@ -32,41 +57,26 @@ export default class ListProductsComponent extends Component {
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Kart adı</td>
-                                <td>Kart Kategori</td>
-                                <td>Kart Marka</td>
-                                <td>Kart Konum</td>
-                                <td>Kart Fiyat</td>
-                                <td>Kart Adet</td>
-                                <td>Kart Açıklama</td>
-                                <td>Kart Eylemler</td>
-                            </tr>
+                            {
+                                this.state.products.map(
+                                    (product, count) =>
+                                    <tr key = {product.id}>
+                                        <th scope="row">{count+1}</th>
+                                        <td>{product.name}</td>
+                                        <td>{product.category.name}</td>
+                                        <td>{product.brand.name}</td>
+                                        <td>{product.location}</td>
+                                        <td>{product.price}</td>
+                                        <td>{product.quantity}</td>
+                                        <td>{product.description}</td>
 
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Kart adı</td>
-                                <td>Kart Kategori</td>
-                                <td>Kart Marka</td>
-                                <td>Kart Konum</td>
-                                <td>Kart Fiyat</td>
-                                <td>Kart Adet</td>
-                                <td>Kart Açıklama</td>
-                                <td>Kart Eylemler</td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Kart adı</td>
-                                <td>Kart Kategori</td>
-                                <td>Kart Marka</td>
-                                <td>Kart Konum</td>
-                                <td>Kart Fiyat</td>
-                                <td>Kart Adet</td>
-                                <td>Kart Açıklama</td>
-                                <td>Kart Eylemler</td>
-                            </tr>
+                                        <td>
+                                            <button style={{marginLeft: "10px"}} className="btn btn-info" onClick={ () => this.updateProduct(product.id)}>Güncelle</button>
+                                            <button style={{marginLeft: "10px"}} className="btn btn-danger" onClick={ () => this.deleteProduct(product.id)}>Sil</button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
                         </tbody>
                     </table>
                 </div>

@@ -52,9 +52,9 @@ export default class ListCategoriesComponent extends Component {
                         <tbody>
                             {   
                                 this.state.categories.map(
-                                    category =>
+                                    (category, count) =>
                                     <tr key = {category.id}>
-                                        <th scope="row">1</th>
+                                        <th scope="row">{count+1}</th>
                                         <td>{category.name}</td>
                                         <td>{category.description}</td>
                                         <td>Kategori Son Güncelleme</td>

@@ -1,5 +1,7 @@
 package com.erhan.InventoryManagementWebApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +14,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "category_id")
     private Set<Product> products = new HashSet<>();
 
     private String description;
