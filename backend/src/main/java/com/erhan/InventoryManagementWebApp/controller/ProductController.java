@@ -4,12 +4,14 @@ import com.erhan.InventoryManagementWebApp.exception.ResourceNotFoundException;
 import com.erhan.InventoryManagementWebApp.model.Product;
 import com.erhan.InventoryManagementWebApp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -20,8 +22,8 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @GetMapping("/products")
-    public List<Product> getAllProducts(){
-        return productRepository.findAll();
+    public Page<Product> getProducts(@RequestParam Optional<String> searchWord, @RequestParam Optional<Integer> pageNumber){
+        return productRepository.find(searchWord.orElse("_"),PageRequest.of(pageNumber.orElse(0), 5));
     }
 
     @GetMapping("/products/{id}")

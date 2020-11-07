@@ -50,6 +50,10 @@ class AddProductComponent extends Component {
         });
 
         if (this.state.id === 'new'){
+            this.setState({
+                category: this.state.categories[0],
+                brand: this.state.brands[0]
+            })
             return;
         }else{
             ProductService.getProductById(this.state.id).then((response) => {
@@ -74,18 +78,6 @@ class AddProductComponent extends Component {
         }else{
             return <h3 className="text-center">Ürün Güncelle</h3>
         }
-    }
-
-    clearState(){
-        this.setState({ 
-            name: '',
-            category: {},
-            brand: {},
-            location: '',
-            price: '',
-            quantity: '',
-            description: ''
-        });
     }
 
     // event handlers
@@ -142,13 +134,15 @@ class AddProductComponent extends Component {
             quantity: this.state.quantity,
             description: this.state.description
         }
+        
+        console.log(JSON.stringify(product));
 
         // add product
         if (this.state.id === 'new'){
             ProductService.addProduct(product).then((response) => {
                 // TODO show succes message on screen
                 if (response.status === 200){
-                    this.clearState();
+                    this.props.history.push('/add-product/new');
                 }else{ // TODO if new product add fails, show error message
                     console.log("Product add failed with error code: ", response.status);
                 }
@@ -181,26 +175,27 @@ class AddProductComponent extends Component {
                         <div className="card col-md-6 offset-md-3">
                             {this.getTitle()}
                             <div className="card-body">
-                                <form>
+                                <form onSubmit={this.saveProduct} >
                                
                                     <div className="form-group">
                                         <label>Adı: </label>
-                                        <input className="form-control" placeholder="Ürün adı" name="name"
+                                        <input className="form-control" placeholder="Ürün adı" name="name" type="text" required
                                             value={this.state.name} onChange={this.changeNameHandler}/>
                                     </div>
 
                                     <div className="form-group">
                                         <label>Kategori: </label>
-                                        <select className="form-control" value={JSON.stringify(this.state.category)}
-                                            onChange={this.changeCategoryHandler}>
-                                            
-                                            {this.state.categories.map(category =>
-                                                <option
-                                                    key={category.id}
-                                                    name={category.id}
-                                                    value={JSON.stringify(category)}>
-                                                    {category.name}
-                                                </option>
+                                        <select className="form-control"
+                                        value={JSON.stringify(this.state.category)} onChange={this.changeCategoryHandler}>
+                                            <option>.....</option>
+                                            {
+                                                this.state.categories.map(category =>
+                                                    <option
+                                                        key={category.id}
+                                                        name={category.id}
+                                                        value={JSON.stringify(category)}>
+                                                        {category.name}
+                                                    </option>
                                             )}
                                         </select>
                                     </div>
@@ -209,6 +204,7 @@ class AddProductComponent extends Component {
                                         <label>Marka: </label>
                                         <select className="form-control" value={JSON.stringify(this.state.brand)}
                                             onChange={this.changeBrandHandler} name="brand" >
+                                            <option>.....</option>
                                             {
                                                 this.state.brands.map(brand=>
                                                     <option
@@ -224,7 +220,7 @@ class AddProductComponent extends Component {
 
                                     <div className="form-group">
                                         <label>Konum: </label>
-                                        <input className="form-control" placeholder="Konum" name="location"
+                                        <input className="form-control" placeholder="Konum" name="location" type="text" required
                                             value={this.state.location} onChange={this.changeLocationHandler}/>
                                     </div>
 
@@ -236,7 +232,7 @@ class AddProductComponent extends Component {
 
                                     <div className="form-group">
                                         <label>Adet: </label>
-                                        <input className="form-control" type="number" placeholder="Adet" name="quantity"
+                                        <input className="form-control" placeholder="Adet" name="quantity" type="number" required
                                             value={this.state.quantity} onChange={this.changeQuantityHandler}/>
                                     </div>
            
@@ -246,7 +242,7 @@ class AddProductComponent extends Component {
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
                                     </div>
 
-                                    <button className="btn btn-success" onClick={this.saveProduct}>Kaydet</button>
+                                    <input className="btn btn-success" type="submit" value="Kaydet"></input>  
                                     <button className="btn btn-danger" onClick={this.cancel} style={{marginLeft: "10px"}}>İptal</button>
                                 </form>
                             </div>

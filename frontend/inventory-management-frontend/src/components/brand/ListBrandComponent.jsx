@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import BrandService from '../../services/BrandService';
+import '../../styles/list.css'
 
 export default class ListBrandsComponent extends Component {
 
@@ -29,7 +30,9 @@ export default class ListBrandsComponent extends Component {
     // TODO check delete successful, show error if necessary
     deleteBrand(id){
         BrandService.deleteBrand(id).then((response) => {
-            this.setState({brands: this.state.brands.filter(brand => brand.id !== id)});
+            if (response.status === 200){
+                this.setState({brands: this.state.brands.filter(brand => brand.id !== id)});
+            }
         });
     }
 
@@ -45,7 +48,6 @@ export default class ListBrandsComponent extends Component {
                                 <th scope="col">#</th>
                                 <th scope="col">Adı</th>
                                 <th scope="col">Açıklama</th>
-                                <th scope="col">Son Güncelleme</th>
                                 <th scope="col">Eylemler</th>
                             </tr>
                         </thead>
@@ -55,14 +57,13 @@ export default class ListBrandsComponent extends Component {
                                 this.state.brands.map(
                                     (brand, count) =>
                                     <tr key = {brand.id}>
-                                        <th scope="row">{count+1}</th>
-                                        <td>{brand.name}</td>
-                                        <td>{brand.description}</td>
-                                        <td>Marka Son Güncelleme</td>
+                                        <th className="count-col" scope="row">{count+1}</th>
+                                        <td className="name-col">{brand.name}</td>
+                                        <td className="desc-col">{brand.description}</td>
 
-                                        <td>
-                                            <button style={{marginLeft: "10px"}} className="btn btn-info" onClick={ () => this.updateBrand(brand.id)}>Güncelle</button>
-                                            <button style={{marginLeft: "10px"}} className="btn btn-danger" onClick={ () => this.deleteBrand(brand.id)}>Sil</button>
+                                        <td className="buttons">
+                                            <button className="btn btn-info" onClick={ () => this.updateBrand(brand.id) }>Güncelle</button>
+                                            <button className="btn btn-danger" onClick={ () => this.deleteBrand(brand.id) }>Sil</button>
                                         </td>
                                     </tr>
                                 )

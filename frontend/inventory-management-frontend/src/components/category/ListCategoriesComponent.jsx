@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CategoryService from '../../services/CategoryService';
+import '../../styles/list.css'
 
 export default class ListCategoriesComponent extends Component {
 
@@ -28,7 +29,9 @@ export default class ListCategoriesComponent extends Component {
     // TODO add tier-2 control (e.g dialog-box)
     deleteCategory(id){
         CategoryService.deleteCategory(id).then((response) => {
-            this.setState({categories: this.state.categories.filter(category => category.id !== id)});
+            if (response.status === 200){
+                this.setState({categories: this.state.categories.filter(category => category.id !== id)});
+            }
         });
     }
 
@@ -36,7 +39,7 @@ export default class ListCategoriesComponent extends Component {
         return (
             <div>
                 <h2 className="text-center">Kategori Listesi</h2>
-     
+
                 <div className="row">
                     <table className="table table-bordered table-hover">
                         <thead className="thead-dark">
@@ -44,7 +47,6 @@ export default class ListCategoriesComponent extends Component {
                                 <th scope="col">#</th>
                                 <th scope="col">Adı</th>
                                 <th scope="col">Açıklama</th>
-                                <th scope="col">Son Güncelleme</th>
                                 <th scope="col">Eylemler</th>
                             </tr>
                         </thead>
@@ -54,14 +56,13 @@ export default class ListCategoriesComponent extends Component {
                                 this.state.categories.map(
                                     (category, count) =>
                                     <tr key = {category.id}>
-                                        <th scope="row">{count+1}</th>
-                                        <td>{category.name}</td>
-                                        <td>{category.description}</td>
-                                        <td>Kategori Son Güncelleme</td>
+                                        <th className="count-col" scope="row">{count+1}</th>
+                                        <td className="name-col">{category.name}</td>
+                                        <td className="desc-col" >{category.description}</td>
 
-                                        <td>
-                                            <button style={{marginLeft: "10px"}} className="btn btn-info" onClick={ () => this.updateCategory(category.id)}>Güncelle</button>
-                                            <button style={{marginLeft: "10px"}} className="btn btn-danger" onClick={ () => this.deleteCategory(category.id)}>Sil</button>
+                                        <td className="buttons">
+                                            <button className="btn btn-info" onClick={ () => this.updateCategory(category.id) }>Güncelle</button>
+                                            <button className="btn btn-danger" onClick={ () => this.deleteCategory(category.id) }>Sil</button>
                                         </td>
                                     </tr>
                                 )

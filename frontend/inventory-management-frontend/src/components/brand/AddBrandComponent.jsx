@@ -76,7 +76,7 @@ export default class AddBrandComponent extends Component {
             BrandService.updateBrand(brand, this.state.id).then((response) => {
                 // if brand updated successfuly, show success message and return to brand list
                 if(response.status === 200){
-                    this.props.history.push('/categories');
+                    this.props.history.push('/brands');
                 }else{  // TODO if new brand add fails, show error message
                     console.log("Brand add failed with error code: ", response.status);
                 }
@@ -96,7 +96,7 @@ export default class AddBrandComponent extends Component {
                         <div className="card col-md-6 offset-md-3">
                             {this.getTitle()}
                             <div className="card-body">
-                                <form>
+                                <form onSubmit={this.saveBrand}>
                                
                                     <div className="form-group">
                                         <label>Adı: </label>
@@ -110,7 +110,7 @@ export default class AddBrandComponent extends Component {
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
                                     </div>
 
-                                    <button className="btn btn-success" onClick={this.saveBrand}>Kaydet</button>
+                                    <input type="submit" className="btn btn-success" value="Kaydet"></input>
                                     <button className="btn btn-danger" onClick={this.cancel} style={{marginLeft: "10px"}}>İptal</button>
                                 </form>
                             </div>

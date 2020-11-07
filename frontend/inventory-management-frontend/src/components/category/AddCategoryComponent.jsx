@@ -96,11 +96,11 @@ export default class AddCategoryComponent extends Component {
                         <div className="card col-md-6 offset-md-3">
                             {this.getTitle()}
                             <div className="card-body">
-                                <form>
+                                <form onSubmit={this.saveCategory}>
                                
                                     <div className="form-group">
                                         <label>Adı: </label>
-                                        <input className="form-control" placeholder="Kategori adı" name="name"
+                                        <input className="form-control" placeholder="Kategori adı" name="name" type="text" required
                                             value={this.state.name} onChange={this.changeNameHandler}/>
                                     </div>
 
@@ -110,8 +110,8 @@ export default class AddCategoryComponent extends Component {
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
                                     </div>
 
-                                    <button className="btn btn-success" onClick={this.saveCategory}>Kaydet</button>
-                                    <button className="btn btn-danger" onClick={this.cancel} style={{marginLeft: "10px"}}>İptal</button>
+                                    <input type="submit" className="btn btn-success" value="Kaydet"></input>
+                                    <button className="btn btn-danger" onClick={this.cancel}>İptal</button>
                                 </form>
                             </div>
                         </div>

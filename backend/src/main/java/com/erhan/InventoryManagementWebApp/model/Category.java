@@ -15,7 +15,7 @@ public class Category {
     private Long id;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "category_id")
     private Set<Product> products = new HashSet<>();
 

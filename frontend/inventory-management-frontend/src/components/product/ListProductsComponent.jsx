@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ProductService from '../../services/ProductService';
+import '../../styles/list.css'
 
 export default class ListProductsComponent extends Component {
 
@@ -7,16 +8,20 @@ export default class ListProductsComponent extends Component {
         super(props)
 
         this.state = {
-            products: []
+            products: [],
+            searchWord: '',
+            pageNumber: 0
         }
 
         this.updateProduct = this.updateProduct.bind(this);
         this.deleteProduct = this.deleteProduct.bind(this);
+        this.changeSearchWordHandler = this.changeSearchWordHandler.bind(this);
+        this.searchProduct = this.searchProduct.bind(this);
     }
 
     componentDidMount(){
-        ProductService.getProducts().then((response) => {
-            this.setState({products: response.data, rowCount: 0})
+        ProductService.getProducts(this.state.searchWord, this.state.pageNumber).then((response) => {
+            this.setState({products: response.data.content});
         });
     }
 
@@ -29,19 +34,38 @@ export default class ListProductsComponent extends Component {
     // TODO check delete successful, show error if necessary
     deleteProduct(id){
         ProductService.deleteProduct(id).then((response) => {
-            this.setState({products: this.state.products.filter(product => product.id !== id)});
-        })
+            if (response.status === 200){
+                this.setState({products: this.state.products.filter(product => product.id !== id)});
+            }
+        });
     }
 
+    changeSearchWordHandler = (event) => {
+        this.setState({searchWord: event.target.value});
+    }
 
+    searchProduct(){
+        ProductService.getProducts(this.state.searchWord).then((response) => {
+            this.setState({products: response.data.content, searchWord: ""})
+        });
+    }
 
     render() {
         return (
             <div>
                 <h2 className="text-center">Ürün Listesi</h2>
-     
+
+                <div className="search-bar md-form mb-3 input-group">
+                    <input className="form-control" type="text" placeholder="Ara" aria-label="Ara"
+                        value={this.state.searchWord} onChange={this.changeSearchWordHandler} />
+                    <div className="input-group-btn">
+                        <button className="btn btn-info" onClick={ () => this.searchProduct() }>Ara</button>
+                    </div>
+                    
+                </div>
+
                 <div className="row">
-                    <table className="table table-striped table-bordered">
+                    <table className="table table-hover table-bordered table-products">
                         <thead className="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
@@ -60,19 +84,19 @@ export default class ListProductsComponent extends Component {
                             {
                                 this.state.products.map(
                                     (product, count) =>
-                                    <tr key = {product.id}>
-                                        <th scope="row">{count+1}</th>
-                                        <td>{product.name}</td>
-                                        <td>{product.category.name}</td>
-                                        <td>{product.brand.name}</td>
-                                        <td>{product.location}</td>
-                                        <td>{product.price}</td>
-                                        <td>{product.quantity}</td>
-                                        <td>{product.description}</td>
+                                    <tr className="table-row" key = {product.id}>
+                                        <th className="count-col" scope="row">{count+1}</th>
+                                        <td className="name-col">{product.name}</td>
+                                        {product.category ? (<td className="category-col">{product.category.name}</td>):(<td className="category-col"></td>)}
+                                        {product.brand ? (<td className="brand-col">{product.brand.name}</td>):(<td className="brand-col"></td>)}
+                                        <td className="location-col">{product.location}</td>
+                                        <td className="price-col">{product.price}</td>
+                                        <td className="quantity-col">{product.quantity}</td>
+                                        <td className="desc-col">{product.description}</td>
 
-                                        <td>
-                                            <button style={{marginLeft: "10px"}} className="btn btn-info" onClick={ () => this.updateProduct(product.id)}>Güncelle</button>
-                                            <button style={{marginLeft: "10px"}} className="btn btn-danger" onClick={ () => this.deleteProduct(product.id)}>Sil</button>
+                                        <td className="buttons">
+                                            <button className="btn btn-info" onClick={ () => this.updateProduct(product.id) }>Güncelle</button>
+                                            <button className="btn btn-danger" onClick={ () => this.deleteProduct(product.id) }>Sil</button>
                                         </td>
                                     </tr>
                                 )

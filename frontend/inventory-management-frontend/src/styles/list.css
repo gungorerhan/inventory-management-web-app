@@ -1,0 +1,48 @@
+table {
+    width: 100%;
+}
+
+td
+{
+ max-width: 0;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+}
+
+.count-col, .price-col, .quantity-col {
+    width: 1%;
+    text-align: center;
+}
+
+.name-col {
+    width: 30%;
+}
+
+.table-products .name-col {
+    width: 15%;
+}
+
+.category-col, .brand-col {
+    width: 15%;
+}
+
+.location-col {
+    width: 10%;
+}
+
+.buttons {
+    width: 15%;
+}
+
+.desc {
+    width: 57%;
+}
+
+.btn-danger {
+    margin-left: 10px;
+}
+
+.table-row {
+    height: 1%;
+}
