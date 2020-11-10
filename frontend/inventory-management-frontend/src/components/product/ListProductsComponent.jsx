@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ProductService from '../../services/ProductService';
-import '../../styles/list.css'
+import '../../styles/list.css';
+import Pagination from './Pagination';
 
 export default class ListProductsComponent extends Component {
 
@@ -8,21 +9,40 @@ export default class ListProductsComponent extends Component {
         super(props)
 
         this.state = {
+            // table data
             products: [],
+
+            // query db
             searchWord: '',
-            pageNumber: 0
+
+            // pagination
+            pageNumber: 0,
+            pageSize: 10,
+            pageCount: 10,
+
+            // waiting for data?
+            loading: true
         }
 
         this.updateProduct = this.updateProduct.bind(this);
         this.deleteProduct = this.deleteProduct.bind(this);
         this.changeSearchWordHandler = this.changeSearchWordHandler.bind(this);
         this.searchProduct = this.searchProduct.bind(this);
+        this.paginate = this.paginate.bind(this);
     }
 
     componentDidMount(){
-        ProductService.getProducts(this.state.searchWord, this.state.pageNumber).then((response) => {
-            this.setState({products: response.data.content});
+        ProductService.getProducts(this.state.searchWord, this.state.pageNumber, this.state.pageSize).then((response) => {
+            this.setState({products: response.data.content, pageCount: response.data.totalPages, loading:false});
         });
+    }
+
+    componentDidUpdate(){
+        if (this.state.loading){
+            ProductService.getProducts(this.state.searchWord, this.state.pageNumber, this.state.pageSize).then((response) => {
+                this.setState({products: response.data.content, pageCount: response.data.totalPages, loading: false});
+            });
+        }
     }
 
     // event handlers
@@ -35,7 +55,7 @@ export default class ListProductsComponent extends Component {
     deleteProduct(id){
         ProductService.deleteProduct(id).then((response) => {
             if (response.status === 200){
-                this.setState({products: this.state.products.filter(product => product.id !== id)});
+                this.setState({loading: true});
             }
         });
     }
@@ -45,12 +65,19 @@ export default class ListProductsComponent extends Component {
     }
 
     searchProduct(){
-        ProductService.getProducts(this.state.searchWord).then((response) => {
-            this.setState({products: response.data.content, searchWord: ""})
-        });
+        this.setState({loading: true});
+    }
+
+    paginate(pageNumber){
+        this.setState({pageNumber: pageNumber, loading: true});
     }
 
     render() {
+        // add loading animation here !!
+        if (this.state.loading) {
+            return <h2>Loading</h2>
+        }
+
         return (
             <div>
                 <h2 className="text-center">Ürün Listesi</h2>
@@ -65,7 +92,7 @@ export default class ListProductsComponent extends Component {
                 </div>
 
                 <div className="row">
-                    <table className="table table-hover table-bordered table-products">
+                    <table className="table table-hover table-bordered table-products table-sm">
                         <thead className="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
@@ -81,7 +108,7 @@ export default class ListProductsComponent extends Component {
                         </thead>
 
                         <tbody>
-                            {
+                            {   
                                 this.state.products.map(
                                     (product, count) =>
                                     <tr className="table-row" key = {product.id}>
@@ -104,7 +131,10 @@ export default class ListProductsComponent extends Component {
                         </tbody>
                     </table>
                 </div>
-
+                
+                <div id="pagination">
+                    <Pagination pageNumber={this.state.pageNumber} pageCount={this.state.pageCount} paginate={this.paginate}/>
+                </div>
 
             </div>
         )

@@ -41,7 +41,7 @@ export default class ListCategoriesComponent extends Component {
                 <h2 className="text-center">Kategori Listesi</h2>
 
                 <div className="row">
-                    <table className="table table-bordered table-hover">
+                    <table className="table table-sm table-bordered table-hover">
                         <thead className="thead-dark">
                             <tr>
                                 <th scope="col">#</th>

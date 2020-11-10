@@ -134,15 +134,13 @@ class AddProductComponent extends Component {
             quantity: this.state.quantity,
             description: this.state.description
         }
-        
-        console.log(JSON.stringify(product));
 
         // add product
         if (this.state.id === 'new'){
             ProductService.addProduct(product).then((response) => {
                 // TODO show succes message on screen
                 if (response.status === 200){
-                    this.props.history.push('/add-product/new');
+                    window.location.reload();
                 }else{ // TODO if new product add fails, show error message
                     console.log("Product add failed with error code: ", response.status);
                 }

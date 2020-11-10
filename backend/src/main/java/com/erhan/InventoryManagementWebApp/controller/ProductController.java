@@ -22,8 +22,10 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @GetMapping("/products")
-    public Page<Product> getProducts(@RequestParam Optional<String> searchWord, @RequestParam Optional<Integer> pageNumber){
-        return productRepository.find(searchWord.orElse("_"),PageRequest.of(pageNumber.orElse(0), 5));
+    public Page<Product> getProducts(@RequestParam Optional<String> searchWord,
+                                     @RequestParam Optional<Integer> pageNumber,
+                                     @RequestParam Optional<Integer> pageSize){
+        return productRepository.find(searchWord.orElse("_"),PageRequest.of(pageNumber.orElse(0), pageSize.orElse(5)));
     }
 
     @GetMapping("/products/{id}")
