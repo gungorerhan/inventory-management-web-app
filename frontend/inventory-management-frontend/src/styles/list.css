@@ -47,4 +47,25 @@ td
     height: 1%;
 }
 
+.title-add-btn {
+    height: 10px;
+    position: relative;
+    bottom: 30px;
+    margin-top: 60px;
+}
 
+.title-add-btn > *{
+    display: inline-block;
+    position: absolute;
+}
+
+.title {
+    left: 0%;
+    right: 0%;
+    text-align: center;
+
+}
+
+.btn-add {    
+    right: 0px;
+} 

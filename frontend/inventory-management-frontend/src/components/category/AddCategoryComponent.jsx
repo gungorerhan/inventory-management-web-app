@@ -41,10 +41,6 @@ export default class AddCategoryComponent extends Component {
         }
     }
 
-    clearState(){
-        this.setState({name: '', description: ''});
-    }
-
     // event handlers
     changeNameHandler = (event) => {
         this.setState({name: event.target.value});
@@ -66,7 +62,8 @@ export default class AddCategoryComponent extends Component {
             CategoryService.addCategory(category).then((response) => {
                 // TODO if new category successfuly added, show success message and clear state
                 if(response.status === 200){
-                    this.clearState();
+                    window.alert("Ekleme işlemi başarılı")
+                    this.props.history.push('/categories');
                 }else{  // TODO if new category add fails, show error message
                     console.log("Category add failed with error code: ", response.status);
                 }
@@ -76,6 +73,7 @@ export default class AddCategoryComponent extends Component {
             CategoryService.updateCategory(category, this.state.id).then((response) => {
                 // if category updated successfuly, show success message and return to category list
                 if(response.status === 200){
+                    window.alert("Güncelleme işlemi başarılı")
                     this.props.history.push('/categories');
                 }else{  // TODO if category update fails, show error message
                     console.log("Category add failed with error code: ", response.status);

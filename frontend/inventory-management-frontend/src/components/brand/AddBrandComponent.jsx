@@ -41,10 +41,6 @@ export default class AddBrandComponent extends Component {
         }
     }
 
-    clearState(){
-        this.setState({name: '', description: ''});
-    }
-
     // event handlers
     changeNameHandler = (event) => {
         this.setState({name: event.target.value});
@@ -66,7 +62,8 @@ export default class AddBrandComponent extends Component {
             BrandService.addBrand(brand).then((response) => {
                 // if new brand successfuly added, show success message and clear state
                 if(response.status === 200){
-                    this.clearState();
+                    window.alert("Ekleme işlemi başarılı")
+                    this.props.history.push('/brands');
                 }else{  // TODO if new brand add fails, show error message
                     console.log("Brand add failed with error code: ", response.status);
                 }
@@ -76,6 +73,7 @@ export default class AddBrandComponent extends Component {
             BrandService.updateBrand(brand, this.state.id).then((response) => {
                 // if brand updated successfuly, show success message and return to brand list
                 if(response.status === 200){
+                    window.alert("Güncelleme işlemi başarılı")
                     this.props.history.push('/brands');
                 }else{  // TODO if new brand add fails, show error message
                     console.log("Brand add failed with error code: ", response.status);

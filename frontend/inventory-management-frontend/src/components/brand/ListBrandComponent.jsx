@@ -11,6 +11,7 @@ export default class ListBrandsComponent extends Component {
             brands: []
         }
 
+        this.addBrand = this.addBrand.bind(this);
         this.updateBrand = this.updateBrand.bind(this);
         this.deleteBrand = this.deleteBrand.bind(this);
     }
@@ -22,24 +23,36 @@ export default class ListBrandsComponent extends Component {
     }
 
     // event handlers
+    addBrand(){
+        this.props.history.push("/add-brand/new");
+    }
+
     updateBrand(id){
         this.props.history.push(`/add-brand/${id}`);
     }
 
-    // TODO add tier-2 control (e.g dialog-box)
     // TODO check delete successful, show error if necessary
     deleteBrand(id){
-        BrandService.deleteBrand(id).then((response) => {
-            if (response.status === 200){
-                this.setState({brands: this.state.brands.filter(brand => brand.id !== id)});
-            }
-        });
+        if (window.confirm('Silmek istediğinize emin misiniz?')) {
+            // Delete from db
+            BrandService.deleteBrand(id).then((response) => {
+                if (response.status === 200){
+                    this.setState({brands: this.state.brands.filter(brand => brand.id !== id)});
+                    window.alert("Silme işlemi başarılı!");
+                }
+            });
+          } else {
+            // Do nothing!
+          }   
     }
 
     render() {
         return (
             <div>
-                <h2 className="text-center">Marka Listesi</h2>
+                <div className="title-add-btn">
+                    <h2 className="text-center title">Marka Listesi</h2>
+                    <button className="btn btn-info btn-add" onClick={ () => this.addBrand() }>Ekle</button>
+                </div>
      
                 <div className="row">
                     <table className="table table-sm table-bordered table-hover">

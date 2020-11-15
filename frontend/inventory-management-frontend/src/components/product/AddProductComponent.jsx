@@ -87,20 +87,29 @@ class AddProductComponent extends Component {
 
    changeCategoryHandler = (event) => {
         if (event.target.value !== ''){
-            const category = JSON.parse(event.target.value);
-            this.setState({
-                category: category
-            });
+            if (event.target.value === '.....'){
+                this.setState({category: null});
+            } else {
+                const category = JSON.parse(event.target.value);
+                this.setState({
+                    category: category
+                });
+            }
             
         }
     }
 
     changeBrandHandler = (event) => {
         if (event.target.value !== ''){
-            const brand = JSON.parse(event.target.value);
-            this.setState({
-                brand: brand
-            });
+            if (event.target.value === '.....'){
+                this.setState({brand: null});
+            } else {
+                const brand = JSON.parse(event.target.value);
+                this.setState({
+                    brand: brand
+                });
+            }
+            
         }
     }
 
@@ -140,6 +149,7 @@ class AddProductComponent extends Component {
             ProductService.addProduct(product).then((response) => {
                 // TODO show succes message on screen
                 if (response.status === 200){
+                    window.alert("Ekleme işlemi başarılı")
                     window.location.reload();
                 }else{ // TODO if new product add fails, show error message
                     console.log("Product add failed with error code: ", response.status);
@@ -149,6 +159,7 @@ class AddProductComponent extends Component {
             ProductService.updateProduct(product, this.state.id).then((response) => {
                 // TODO show succes message on screen
                 if (response.status === 200){
+                    window.alert("Güncelleme işlemi başarılı")
                     this.props.history.push('/products');
                 }else{ // TODO if new product update fails, show error message
                     console.log("Product update failed with error code: ", response.status);
@@ -176,16 +187,14 @@ class AddProductComponent extends Component {
                                 <form onSubmit={this.saveProduct} >
                                
                                     <div className="form-group">
-                                        <label>Adı: </label>
                                         <input className="form-control" placeholder="Ürün adı" name="name" type="text" required
                                             value={this.state.name} onChange={this.changeNameHandler}/>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Kategori: </label>
                                         <select className="form-control"
                                         value={JSON.stringify(this.state.category)} onChange={this.changeCategoryHandler}>
-                                            <option>.....</option>
+                                            <option value=".....">Kategori Seçiniz</option>
                                             {
                                                 this.state.categories.map(category =>
                                                     <option
@@ -199,10 +208,10 @@ class AddProductComponent extends Component {
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Marka: </label>
+                                       
                                         <select className="form-control" value={JSON.stringify(this.state.brand)}
                                             onChange={this.changeBrandHandler} name="brand" >
-                                            <option>.....</option>
+                                            <option value=".....">Marka Seçiniz</option>
                                             {
                                                 this.state.brands.map(brand=>
                                                     <option
@@ -217,25 +226,21 @@ class AddProductComponent extends Component {
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Konum: </label>
                                         <input className="form-control" placeholder="Konum" name="location" type="text" required
                                             value={this.state.location} onChange={this.changeLocationHandler}/>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Fiyat: </label>
                                         <input type="number" className="form-control" placeholder="Fiyat" name="price"
                                             value={this.state.price} onChange={this.changePriceHandler}/>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Adet: </label>
                                         <input className="form-control" placeholder="Adet" name="quantity" type="number" required
                                             value={this.state.quantity} onChange={this.changeQuantityHandler}/>
                                     </div>
            
-                                    <div className="form-group">
-                                        <label>Açıklama: </label>
+                                    <div className="form-group">    
                                         <input className="form-control" placeholder="Açıklama" name="description"
                                             value={this.state.description} onChange={this.changeDescriptionHandler}/>
                                     </div>

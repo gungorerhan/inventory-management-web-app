@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BRAND_API_BASE_URL = "http://localhost:8080/api/v1/brands";
+const BRAND_API_BASE_URL = "http://192.168.1.45:8080/api/v1/brands";
+//const BRAND_API_BASE_URL = "http://localhost:8080/api/v1/brands";
 
 class BrandService {
 

@@ -46,18 +46,26 @@ export default class ListProductsComponent extends Component {
     }
 
     // event handlers
+    addProduct(){
+        this.props.history.push("/add-product/new");
+    }
+
     updateProduct(id){
         this.props.history.push(`/add-product/${id}`);
     }
 
-    // TODO add tier-2 control (e.g dialog-box)
-    // TODO check delete successful, show error if necessary
     deleteProduct(id){
-        ProductService.deleteProduct(id).then((response) => {
-            if (response.status === 200){
-                this.setState({loading: true});
-            }
-        });
+        if (window.confirm('Silmek istediğinize emin misiniz?')) {
+            // Delete from db
+            ProductService.deleteProduct(id).then((response) => {
+                if (response.status === 200){
+                    this.setState({loading: true});
+                    window.alert("Silme işlemi başarılı!");
+                }
+            });
+          } else {
+            // Do nothing!
+          } 
     }
 
     changeSearchWordHandler = (event) => {
@@ -80,7 +88,10 @@ export default class ListProductsComponent extends Component {
 
         return (
             <div>
-                <h2 className="text-center">Ürün Listesi</h2>
+               <div className="title-add-btn">
+                    <h2 className="text-center title">Ürün Listesi</h2>
+                    <button className="btn btn-info btn-add" onClick={ () => this.addProduct() }>Ekle</button>
+                </div>
 
                 <div className="search-bar md-form mb-3 input-group">
                     <input className="form-control" type="text" placeholder="Ara" aria-label="Ara"

@@ -22,24 +22,39 @@ export default class ListCategoriesComponent extends Component {
     }
 
     // event handlers
+
+    addCategory(){
+        this.props.history.push('/add-category/new');
+    }
+
     updateCategory(id){
         this.props.history.push(`/add-category/${id}`);
     }
 
     // TODO add tier-2 control (e.g dialog-box)
     deleteCategory(id){
-        CategoryService.deleteCategory(id).then((response) => {
-            if (response.status === 200){
-                this.setState({categories: this.state.categories.filter(category => category.id !== id)});
-            }
-        });
+        if (window.confirm('Silmek istediğinize emin misiniz?')) {
+            // Delete from db
+            CategoryService.deleteCategory(id).then((response) => {
+                if (response.status === 200){
+                    this.setState({categories: this.state.categories.filter(category => category.id !== id)});
+                    window.alert("Silme işlemi başarılı!");
+                }
+            });
+          } else {
+            // Do nothing!
+          }   
+        
     }
 
     render() {
         return (
             <div>
-                <h2 className="text-center">Kategori Listesi</h2>
-
+                <div className="title-add-btn">
+                    <h2 className="text-center title">Kategori Listesi</h2>
+                    <button className="btn btn-info btn-add" onClick={ () => this.addCategory() }>Ekle</button>
+                </div>
+                
                 <div className="row">
                     <table className="table table-sm table-bordered table-hover">
                         <thead className="thead-dark">

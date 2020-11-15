@@ -3,7 +3,6 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import HeaderComponent from './components/HeaderComponent';
 import FooterComponent from './components/FooterComponent';
-import HomeComponent from './components/HomeComponent';
 
 import ListProductsComponent from './components/product/ListProductsComponent';
 import AddProductComponent from './components/product/AddProductComponent';
@@ -24,7 +23,7 @@ function App() {
 
         <div className="container">
           <Switch>
-            <Route path="/" exact component={HomeComponent}></Route>
+            <Route path="/" exact component={ListProductsComponent}></Route>
             
             <Route path="/products" exact component={ListProductsComponent}></Route>
             <Route path="/add-product/:id" exact component={AddProductComponent}></Route> 
